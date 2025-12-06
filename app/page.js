@@ -1,66 +1,50 @@
+"use client";
 import Image from "next/image";
 import styles from "./page.module.css";
+import { v4 as uuidv4 } from 'uuid';
+import { useState } from "react";
+import TaskList from "@/components/TaskskList";
+import AddTaskForm from "@/components/addTaskForm/AddTaskForm";
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+const initialTasks = [
+    {
+        id: uuidv4(),
+        name: "Изучить основы React",
+        isComplete: true,
+    },
+    {
+        id: uuidv4(),
+        name: "Изучить основы State",
+        isComplete: true,
+    },
+    {
+        id: uuidv4(),
+        name: "Изучить способы создания многостраничного приложения SPA",
+        isComplete: false,
+    },
+]
+
+const Home = () => {
+    const [taskName, setTaskName] = useState("");
+    const [tasks, setTasks] = useState(initialTasks);
+    const [message, setMessage] = useState(null);
+
+
+    return (
+        <div>
+            <h1>Список задач</h1>
+
+            {
+                message ? <p>{message.text}</p> : <></>
+            }
+            <p>{taskName}</p>
+
+            <AddTaskForm setTasks={setTasks} setMessage={setMessage}   />
+            
+
+            <TaskList setMessage={setMessage} setTasks={setTasks} tasks={tasks}  />
+
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    );
 }
+export default Home;
