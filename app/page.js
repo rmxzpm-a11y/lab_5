@@ -28,22 +28,40 @@ const Home = () => {
     const [taskName, setTaskName] = useState("");
     const [tasks, setTasks] = useState(initialTasks);
     const [message, setMessage] = useState(null);
-
+    
+    const completedCount = tasks.filter(t => t.isComplete).length;
 
     return (
-        <div>
+        <div className="container">
             <h1>Список задач</h1>
-
-            {
-                message ? <p>{message.text}</p> : <></>
-            }
-            <p>{taskName}</p>
-
-            <AddTaskForm setTasks={setTasks} setMessage={setMessage}   />
             
+            <div className="task-counter">
+                📊 Завершено: {completedCount} из {tasks.length}
+            </div>
 
-            <TaskList setMessage={setMessage} setTasks={setTasks} tasks={tasks}  />
+            {message && (
+                <div className={`message ${message.type === 'success' ? 'success' : 'error'}`}>
+                    {message.text}
+                </div>
+            )}
+            
+            {taskName && (
+                <div className="task-preview">
+                    📝 Новая задача: <strong>{taskName}</strong>
+                </div>
+            )}
 
+            <AddTaskForm setTasks={setTasks} setMessage={setMessage} />
+            
+            {tasks.length === 0 ? (
+                <div className="empty-state">
+                    <div className="empty-state-icon">📋</div>
+                    <h3>Задач пока нет</h3>
+                    <p>Добавьте первую задачу выше</p>
+                </div>
+            ) : (
+                <TaskList setMessage={setMessage} setTasks={setTasks} tasks={tasks} />
+            )}
         </div>
     );
 }
